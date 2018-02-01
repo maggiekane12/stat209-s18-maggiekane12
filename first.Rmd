@@ -1,0 +1,45 @@
+---
+title: "first_markdown"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(ggplot2)
+library(dplyr)
+3
+```
+
+## Reading the Data
+
+This data includes the favorite restaurants, locations and meals of the students in Stats209. 
+
+```{r}
+fav_restaurant <- read.csv("~/Desktop/class_restaurants.csv")
+
+```
+
+## Plotting the Data
+
+```{r}
+ggplot(fav_restaurant, aes(cuisine, cost_per_person)) +
+  geom_point()
+```
+
+This graph shows the average cost per person for each cuisine type that the students have entered.
+
+```{r}
+ggplot(fav_restaurant, aes(yearly_visits, cost_per_person)) +
+  geom_point()
+```
+
+This graph shows the relationship between the average yearly visits and the average cost per person.
+
+```{r}
+ggplot(fav_restaurant, aes(cuisine)) +
+  geom_bar()
+```
+
+This graph shows the most popular cuisine types in the class.
+
