@@ -15,31 +15,30 @@ library(dplyr)
 
 This data includes the favorite restaurants, locations and meals of the students in Stats209. 
 
-```{r}
-fav_restaurant <- read.csv("~/Desktop/class_restaurants.csv")
-
+```{r, echo=FALSE}
+class <- read.csv("https://raw.githubusercontent.com/URstats/stat209-s18-maggiekane12/master/class_restaurants.csv")
 ```
 
 ## Plotting the Data
 
-```{r}
-ggplot(fav_restaurant, aes(cuisine, cost_per_person)) +
+```{r, echo=FALSE}
+ggplot(class, aes(cuisine, cost_per_person)) +
   geom_point()
 ```
 
-This graph shows the average cost per person for each cuisine type that the students have entered.
+This graph shows the average **cost per person** for each cuisine type that the students have entered.
 
-```{r}
-ggplot(fav_restaurant, aes(yearly_visits, cost_per_person)) +
+```{r, echo=FALSE}
+ggplot(class, aes(yearly_visits, cost_per_person)) +
   geom_point()
 ```
 
-This graph shows the relationship between the average yearly visits and the average cost per person.
+This graph shows the relationship between the **average yearly visits** and the **average cost per person**.
 
-```{r}
-ggplot(fav_restaurant, aes(cuisine)) +
+```{r, echo=FALSE}
+ggplot(class, aes(cuisine)) +
   geom_bar()
 ```
 
-This graph shows the most popular cuisine types in the class.
+This graph shows the **most popular cuisine** types in the class.
 
