@@ -1,0 +1,63 @@
+---
+title: "Lab 09: Annotating Data Visualizations"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(fig.height = 5)
+knitr::opts_chunk$set(fig.width = 8.5)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(dpi = 300)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+theme_set(theme_minimal())
+```
+
+## Pick a dataset
+
+Murder rates across different cities in the US:
+
+```{r, message=FALSE}
+murder <- read_csv("https://statsmaths.github.io/stat_data/murder_by_city.csv")
+```
+
+## Instructions
+
+Your goal in this lab is to construct an interesting visualization with the
+data that you choose above. You should make use of several manual annotations
+in an effort to tell a visual story about the dataset. Below, you should
+eventually provide a few sentences describing what you found in the dataset
+and then a single plot illustrating the interesting aspects of the data.
+You should incorporate some external information into your plot.
+
+Note that you will certainly want to create many initial exploratory plots
+before settling on a final one for analysis. This time, make sure you that you
+upload both the Rmd and the html files to GitHub (remember, the final report
+should have just one single visualization).
+
+Also note that you will have to use the format `x = as.Data("2017-01-06")` to
+add annotations to an axis that uses time as a component.
+
+## Analysis
+
+The graph below shows the relationship between the state and the number of murders in 2015. The size of each point corresponds to the absolute value of the change in murders from 2014 to 2015. The light blue colored points represent an increase in murders while the salmon colored points represent a decrease in murders from 2014 to 2015. I have highlighted the Baltimore, MD point in red to show that this city has had the largest increase in murders (+133). I have also highlighted the Buffalo, NY point in green to show that this city has reduced the number of murders by 19.
+
+
+```{r}
+ggplot(murder, aes(state, murders_2015)) + 
+  geom_point(aes(size = abs(change), color = change > 0)) +
+  annotate("point", x = "Maryland", y = 344, color = "red", size = 6) +
+  annotate("text", x = "Maryland", y = 350, label = "Baltimore: +133", hjust = 0) +
+  annotate("point", x = "New York", y = 41, color = "green", size = 3) +
+  annotate("text", x = "New York", y = 45, label = "Buffalo: -19", hjust = 0) +
+  coord_flip()
+```
+
+
+
