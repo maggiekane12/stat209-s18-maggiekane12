@@ -1,0 +1,88 @@
+---
+title: "Lab 10: Filtering Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(fig.height = 5)
+knitr::opts_chunk$set(fig.width = 8.5)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(dpi = 300)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+theme_set(theme_minimal())
+```
+
+## Pick a dataset
+
+Today you will again have a choice of three datasets to work with. You can
+choose either to investigate the daily team ELO ratings in the NBA:
+
+```{r, message=FALSE}
+nba <- read_csv("https://statsmaths.github.io/stat_data/nba_elo_daily.csv")
+```
+
+## Instructions
+
+This lab is similar to the last. You'll pick a dataset and then generate an
+analysis of that data using data visualizations. The difference here is that
+instead of a single plot, I would like you to construct 3-4 plots that
+together tell a linear story. Each plot should be separated by a sentence or
+two describing what the viewer should take away from the plot. Try to keep the
+plots similar in some way; perhaps each simply highlights a different subset
+of the data but has the same underlying layers.
+
+Notice that each of the datasets for today are larger than you will probably
+be able to use. You will need to filter the data to a particular team, year,
+subset of curse words. You may further filter the data to highlight an even
+smaller subset of the data within each plot.
+
+## Analysis
+
+```{r}
+nba_new <- filter(nba, team %in% c("BOS","NYK", "CHS", "TRH", "PRO", "DTF", "PIT", "WSC", "CLR", "STB"))
+```
+
+The graph below narrows the data field to focus in on 10 NBA teams. It highlights the relationship between each team and their ELO over the past seasons.
+
+```{r}
+ggplot(nba_new, aes(team, elo)) +
+  geom_point() +
+  geom_point(aes(color = season))
+```
+
+The following graph highlights the first ELO of each team (in the 1947 season). 
+
+```{r}
+ggplot(nba_new, aes(team, elo)) +
+  geom_point() +
+  geom_point(aes(color = season)) +
+  annotate("point", x = "BOS", y = 1294.846, color = "red") +
+  annotate("point", x = "CHS", y = 1309.652, color = "red") +
+  annotate("point", x = "CLR", y = 1307.123, color = "red") +
+  annotate("point", x = "DTF", y = 1279.619, color = "red") +
+  annotate("point", x = "NYK", y = 1306.723, color = "red") +
+  annotate("point", x = "PIT", y = 1295.309, color = "red") +
+  annotate("point", x = "PRO", y = 1305.154, color = "red") +
+  annotate("point", x = "STB", y = 1304.691, color = "red") +
+  annotate("point", x = "TRH", y = 1293.277, color = "red") +
+  annotate("point", x = "WSC", y = 1320.381, color = "red")
+```
+
+The final graph below shows the most recent ELO of the Knicks and Celtics (in the 2017-18 season). The other eight teams are not highlighted because there is no recent (2017/2018) information provided within the data set.
+
+```{r}
+ggplot(nba_new, aes(team, elo)) +
+  geom_point() +
+  geom_point(aes(color = season)) +
+  annotate("point", x = "BOS", y = 1551.458, color = "red") +
+  annotate("point", x = "NYK", y = 1418.374, color = "red")
+```
+
+
