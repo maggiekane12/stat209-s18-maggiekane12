@@ -1,0 +1,77 @@
+---
+title: "Project A"
+author: "Maggie Kane"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+# UR Student Athlete Analysis
+
+## Overview
+
+For this project, I used the Richmond Atheltic website to gather data about student athletes. I was particularly interested in determining if any patterns existed within the female student athlete bio descriptions. I gathered data from the women's lacrosse, soccer, field hockey, and basketball rosters and I focused in on each student's home town, class, hieight and sport. I am expecting to see some correlation between hieght and sport, however I am interested in seeing what other patterns exist within the data I collected.
+
+## Data dictionary
+
+Here is a data dictionary for the 'ur_sports' dataset:
+
+- name: a character variable giving each student's given or preferred name
+- sport: a categorical variable describing the type of sport. Possible options are:
+  "Lacrosse"
+  "Soccer"
+  "Field Hockey"
+  "Basketball"
+- home_state: a character variable describing the location of the athletes home. For US states, only the state will be named (i.e. "Maryland"), but for international altheltes, the country will be named (i.e. "England").
+- year: a numerical variable decribing the class level of each student athelte. Freshman will be valued as a '1', sophomores as a '2', juniors as a '3', and seniors as a '4'.
+- height: a numerical variable describing the hieght of each stuent. Height will be observed in inches rounded to the nearest whole number (i.e. 5'2" will be presented as '62'.
+
+Which can be read in as follows:
+
+```{r, message=FALSE, warning=FALSE}
+ur_sports <- read_csv("https://raw.githubusercontent.com/urstats/stat209-s18-maggiekane12/master/project_A_data.csv")
+```
+
+MAKE SURE TO PRINT OUT THE DATASET IN THE REPORT, AS THE CODE ABOVE WOULD DO
+
+## Exploratory Analysis
+
+Initially, an obvious observation can be made about the difference in team sizes. As shown in the bar graph below, there is a dramatic difference in the number of female student athletes on the lacrosse team in comparison to the basketball team. Logically, this is an appropriate difference because a basketball team only plays five people at a time, while lacrosse teams will field twelve players at a time. The same theory applies to field hockey and soccer. In these sports, each team will have eleven players on the field at any given time. With this background context, it is understandable to see a relationship between the sport and the size of the team. 
+
+```{r, echo=FALSE}
+ggplot(ur_sports, aes(sport)) +
+  geom_bar()
+```
+
+As I mentioned earlier in the overview, I was excited to see a correlation between the student's heights and the sport. The scatter plot below shows the direct correlation of these variables. The figure clearly highlights how much taller the women's basketball team is in comparison to the field hockey team. I was however surprised to see that the women's soccer team had the largest range of hieghts among all of the teams, stretching from 60 to 73 inches, whereas the field hockey team only ranged from 61 to 69 inches.
+
+```{r, echo=FALSE}
+ggplot(ur_sports, aes(sport, height)) +
+  geom_point()
+```
+
+I was also surprised to notice that there is not a significant correlation between the teams and the athelete's home states. Overall, a majority of the athletes are from the east coast of the US, however there were some athletes from the west coast and a few international students as well. As expected, since UR is in Virginia, there is a large portion of student athletes that are from Virginia. Other popular home states include New York, New Jersey, and Pennsylvania.
+
+```{r, echo=FALSE}
+ggplot(ur_sports, aes(home_state)) +
+  geom_bar(aes(color = sport)) +
+  coord_flip()
+```
+
+## Conclusion
+
+Overall, there were several correlations within the data I collected from student athletes at University of Richmond. I was expecting to see the relationship between height and sport, however I did not expect it to be so noticible between the teams. I would like to continue with this data by adding in the rest of the female student athletes as well as include the male student athletes to compare and contrast any new correlations within that dataset.
+
+## References
+
+http://richmondspiders.com
+
+
+
