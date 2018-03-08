@@ -1,5 +1,5 @@
 ---
-title: "Baltimore Analysis"
+title: "Baltimore, Maryland"
 author: "Maggie Kane"
 output:
   html_document:
@@ -26,11 +26,11 @@ library(ggmap)
 bmore <- filter(tracts, cbsa == "Baltimore-Columbia-Towson, MD")
 ```
 
-## **Baltimore, Smalltimore**
-# *Can a correlation be made between location, race, and wealth in the city of Baltimore?*
+*Can a correlation be made between location, race, and wealth in the city of Baltimore?*
 
-Although this may seem like a very simple question, it actually has a complex answer. Of course every city will have correlations between location and wealth, however this article will dive deeper into the census data to identify patterns that exist within the Baltimore community and reasons why these patterns exist.
+Although this may seem like a very simple question, it actually has a complex answer. Of course every city will have correlations between location and wealth, however this article will dive deeper into the census data to identify patterns that exist within the Baltimore community and propose reasons why they may exist.
 
+## Race & Location
 ```{r}
 temp2 <- select(bmore, starts_with("race_"))
 bmore$max_race <- names(temp2)[apply(temp2, 1, which.max)]
@@ -39,21 +39,22 @@ bmore$max_race <- names(temp2)[apply(temp2, 1, which.max)]
 ```{r}
 qmplot(lon, lat, data = bmore, geom = "blank") +
   geom_point(aes(color = max_race), alpha = 0.8) +
-  ggtitle("Race & Location")
+  labs(color = "Majority Race")
 ```
 
-A majority of white Baltimoreans seem to be settled just about everywhere except for the east and west sides of inner Baltimore City. If you have ever seen the HBO show, The Wire, you can see that the east and west side of Baltimore City are known as the most dangerous parts of the state of Maryland. In 2018, USA Today named Baltimore City the most dangerous city in the US (Madhani, 2018). This high ranking is due to a significant amount of gang activity and homicides within the inner city. In the figure above, you can see a direct correlation between these inner city areas and the most prominent race. As depicted in the HBO series, Baltimore city is populated by a majority of black families. Although there are many other races scattered throughout the city, this graph is simply showing the most prominent race in each neighborhood. After filtering through much of the census data, it is apparent that many of the graphs formed this sort of splitting pattern within the city. A similar relationship is shown below with respect to people who were born in the state of Maryland.
+A majority of white Baltimoreans seem to be settled just about everywhere except for the east and west sides of inner Baltimore City. If you have ever seen the HBO show, The Wire, you can see that the east and west side of Baltimore City are known as the most dangerous parts of the state of Maryland. In 2018, USA Today named Baltimore City the most dangerous city in the US (Madhani, 2018). This high ranking is due to a significant amount of gang activity and homicides within the inner city. In the figure above, you can see a direct correlation between these inner city areas and the most prominent race. As depicted in the HBO series, Baltimore city is populated by a majority of black citizens. Although there are many other races scattered throughout the city, this graph is simply showing the most prominent race in each neighborhood. After filtering through much of the census data, it is apparent that many of the graphs formed this sort of splitting pattern down the center of the city. There seems to be a high population of white citizens follwoing down the expressway that runs through the city and down into the inner harbor area. A similar relationship is shown below with respect to people who were born in the state of Maryland.
 
-
+## Marylanders who were born in Maryland
 ```{r}
 qmplot(lon, lat, data = bmore, geom = "blank") +
   geom_point(aes(color = born_same_st), alpha = 0.6) +
   scale_color_viridis() +
-  ggtitle("Marylanders who were born in Maryland")
+  labs(color = "% born in Maryland")
 ```
 
-The second figure in the analysis further depicts how a majority of people who live in Baltimore City were born in Maryland as well. It is commonly assumed that many people who were born in Maryland choose to stay in Baltimore because of their 'Maryland pride'. Although Marylanders love to wave their iconic flag around and gloat about their delicious crabcakes, the census data analysis shows that there could be other reasons why so many Marylanders stay in the same state.
+The second figure in the analysis further depicts how a majority of people who live in Baltimore City were born in Maryland as well. It is commonly assumed that many people who were born in Maryland choose to stay in Baltimore because of their 'Maryland pride'. Although Marylanders love to wave their iconic flag around and gloat about their delicious crabcakes, the census data analysis shows that there could be other reasons why so many Marylanders stay in the same state. The areas around the inner harbor and surrounding the I-83 expressway have newly developed apartment buildings which seem to have attracted out of state citizens.
 
+## Income & Location
 ```{r}
 temp <- select(bmore, starts_with("income_"))
 bmore$max_income <- names(temp)[apply(temp, 1, which.max)]
@@ -62,10 +63,14 @@ bmore$max_income <- names(temp)[apply(temp, 1, which.max)]
 ```{r}
 qmplot(lon, lat, data = bmore, geom = "blank") +
   geom_point(aes(color = max_income), alpha = 0.8) +
-  ggtitle("Income & Location")
+  labs(color = "Majority Income Range")
 ```
 
 The data above shows the average income range within the Baltimore-metro area. You can see that just like the previous graphs, there is a direct correlation between the location and income level. A majority of east and west inner city Baltimoreans recieve an average income of ~ $50,000 or less. Whereas the higher range income Baltimoreans are situated on the outer skirts of the city limits, in the Mays Chapel and Columbia areas. These two areas are known for their beautiful homes, low crime and homicide activity and prominantly white neighborhoods. As you can see, these wealthy neighborhoods are highlighted with incomes ranging from $125,000 to over $999,000. 
+
+The weathlist citizens are again follwing the pattern of living on the outskirts of the city, more towards the Garrison and Columbia areas. A similar splitting pattern also appears in this graph, where a significant amount of high income citizens seem to be situated down the center of the inner city as well. Although you cannot see the underlying geographics of the area, this accumulation of wealth is directly aligned with I-83 and the Baltimore Inner Harbor. I-83 is the expressway that runs from the downtown inner harbor of Baltmore all the way to the northern edges of the county. The inner harbor has recently been renovated and repopulated with beautiful apartment complexes overlooking the water. The renovations seem to have attracted a large and wealthy population.
+
+## Conclusion
 
 In conclusion, the census data of Baltimore has highlighted the relationship that exists between race, location, and income of Baltimore citizens. While many people assume that Marylanders choose to stay in Maryland for their pride, this data has suggested another reason. Many people could come to the conclusion that income levels are so low within the inner city that many Baltimoreans do not have the opportunity to leave the state of Maryland. This can then go further to explain the city's violence and homicide tendencies. Even though mortality rates were not recorded within this census data, one can even predict that there must be a correlation between race, location, income, and mortality rates within Baltimore neighborhoods. It would be interesting to see if an increase in income level would lead towards more neighborhood diversity and decreased violence.
 
