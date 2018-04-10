@@ -1,0 +1,97 @@
+---
+title: "Project C"
+author: "Maggie Kane"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(dpi = 300)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(ggmap)
+library(viridis)
+library(forcats)
+library(smodels)
+```
+
+```{r, message=FALSE}
+dogs <- read_csv("https://raw.githubusercontent.com/urstats/stat209-s18-maggiekane12/master/project_c_data.csv")
+```
+
+## Introduction
+As a pre-veterinary student, I was interested in finding a correlation between dog breeds and their common characteristics. I used the American Kennel Club website to gather information about 100 different dog breeds that included their average height, weight, and life-expectancy. From what I have already learned about most dog breeds, I expected to find a correlation between size (weight) and hieght as well as a correlation between size and life expectancy. However, I am unsure whether or not there will be a direct correlation between height and life expectancy.
+
+## Data dictionary
+
+Here is a data dictionary for the 'dogs' dataset:
+
+- breed: a character variable of the dog type
+- size: a categorical variable describing the average weight of the breed. Possible options are:
+    - "s" - weight between 0 and 20 lbs
+    - "m" - weight between 21 and 50 lbs
+    - "l" - weight between 51 and 100 lbs
+    - "xl" - weight above 100 lbs
+- height: a numerical variable describing the average hieght of each breed. Height will be observed in inches rounded to the nearest whole number (i.e. 1'2" will be presented as '14')
+- life_expectancy: a numerical variable describing the average life span of each breed. Life expecancy will be measured in years rounded to the nearest whole number.
+
+## Methods
+
+In order to determine the correlations between the breeds and their characteristics, we will first examine the breeds life expectancy as a function of it's size. Since 'size' is a categorical variable, so the regression table should provide four values with a 95% confidence interval, which will identify the values that are statistically significant. We will then examine life expectancy as a function of height as well as height as a function of size in order to determine if any correlation exists between these characteristics. A graph will be provided to visually represent each of the regression table models. 
+
+
+## Results
+**Life Expectancy vs. Size**
+```{r}
+model <- lm_basic(life_expectancy ~ 1 + size, data = dogs)
+reg_table(model, level = 0.95)
+```
+
+```{r}
+ggplot(dogs, aes(size, life_expectancy)) +
+  geom_point()
+```
+
+**Life Expectancy vs. Height**
+```{r}
+model1 <- lm_basic(life_expectancy ~ 1 + height, data = dogs)
+reg_table(model1, level = 0.95)
+```
+
+```{r}
+ggplot(dogs, aes(height, life_expectancy)) +
+  geom_point()
+```
+
+**Height vs. Size**
+```{r}
+model2 <- lm_basic(height ~ 1 + size, data = dogs)
+reg_table(model2, level = 0.95)
+```
+
+```{r}
+ggplot(dogs, aes(size, height)) +
+  geom_point()
+```
+
+## Conclusions
+
+From the data above, we can state that there is a statistically significant correlation between all three of the dog breed characteristics. When the life expectancy was examined as a function of the breed's average size, we can observe a significant correlation between small, large, and extra-large dogs. Meaning that small dogs live significantly longer (1.6263 ± 0.8337 years) than large dogs which have anverage life span of 13.5556 ± 0.6183 years. Extra-large dogs however live signficantly shorter than large dogs, with an average life span of 3.0940 ± 1.0846 years less than the large breeds. We can also highlight that medium dogs do not live significantly longer than large dogs since the confidence interval contains 0. These patterns are easily visualized in the following graphic.
+
+When life expectancy was examined as a function of the breed's average height, we can observe that there is a significant decrease in life span as height increases. This pattern is also easily visualized in the graphic below the regression table. Life expectancy decreases by ~ 0.18 years as the breed's average height increases in inches.
+
+When average height and size were examined, as predicted, there are significant differences among each of the categorical variables. Small dogs have an average height that is significantly shorter (13.761 ± 1.460 inches) than a large dog. Medium dogs also have an average height that is significantly shorter (6.519 ± 1.531 inches) than a large dog. Extra-large dogs therefore have an average height that is significantly taller (3.892 ± 1.899 inches) than a large dog. This strong correlation is easily interpreted from the following graphic as well.
+
+In conclusion, our two hypothesis were correct! There is a strong correlation between a breed's average height and weight in addition to the correlation between the average life expectancy and size. I was curious to see if there was a significant correlation between height and life expectancy and the data provided a clear answer. Now when you are walking down the street and pass by a dog, you will automatically be able to hypothesize their life expectancy based on their size and height.
+
+
+## References
+
+http://www.akc.org/dog-breeds/
+
+
