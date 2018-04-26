@@ -1,0 +1,108 @@
+---
+title: "Cancer Analytics"
+author: "Maggie Kane"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(dpi = 300)
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(ggmap)
+library(viridis)
+library(forcats)
+library(smodels)
+library(tidyr)
+```
+
+```{r}
+cancer <- read_csv("https://statsmaths.github.io/stat_data/cancer_inc_data.csv")
+```
+
+## Introduction
+
+Throughout this semester, in congruence with this statistics course, I have been taking a Cancer & Tumorgenesis Biology course. For the duration of the course, we have studied the most prominant types of cancer (breast, prostate, lung, skin, leukemia, lymph, etc.) and their mechanisms for metastasis and growth. We have reviewed many studies which have identified causal effects of cancer but we have not been able to focus on or research the relationship between socioeconomic levels or location on cancer incidence rates. Using this cancer dataset, we will be able to examine this relationship.
+
+In the biology course, one of the most important aspects that we have learned is that the breast and prostate cancer incidence rates have increased dramatically over recent years because the order for mammograms and prostate exams have also increased. People around the country have been encouraged to get a prostate exam or a mammogram every 5 years or so, as a means of prevention and early detection. Therefore, the data should show a higher incidence of breast and prostate cancer simply because we are looking for it. Many other types of cancer however, are not detected until they cause some sort of symptom or discomfort to the patient. With this in mind, there is still an interest between the relationship of socioeconomic level and cancer incidence. The following report will dive deeper into the 'County-level Cancer Incidence Rates' dataset and highlight how a higher income region is positively correlated with higher breast and melanoma cancer incidence and negatively associated with prostate cancer incidence.
+
+## Data Dictionary:
+
+Here is a data dictionary of the data set:
+
+  - name: the name of the county, parish, or census area
+  - state: two letter abbreviation of the state
+  - population: estimated total population
+  - breast: incidence rate per 100,000 women over 18 years of age
+  - colorectal: incidence rate per 100,000 adults over 18 years of age
+  - prostate: incidence rate per 100,000 men over 18 years of age
+  - lung: incidence rate per 100,000 men over 18 years of age
+  - melanoma: incidence rate per 100,000 men over 18 years of age
+  - poverty: percentage of households below the poverty line
+  - income: median household income
+  - region: the state’s region of the country from 9 possible categories
+  - white_alone: percentage of the county identifying as ‘white’
+  - black_alone: percentage of the county identifying as ‘black’
+  - asian_alone: percentage of the county identifying as ‘asian’
+  - lat: decimal latitude of the county centroid
+  - lon: decimal longitude of the county centroid
+
+## Cancer Incidence by Region
+
+```{r}
+cancer_region <- group_summarize(cancer, region)
+```
+
+```{r}
+gather_cancer <- gather(select(cancer_region, region, income_mean, poverty_mean, breast_mean, prostate_mean, melanoma_mean), "key", "value", -region, -income_mean, -poverty_mean)
+```
+
+```{r}
+ggplot(gather_cancer, aes(region, value)) +
+  geom_point() +
+  coord_flip() +
+  facet_wrap(~key, scales = "free_x")
+```
+
+The data above simply highlights the relationship between each region and the individual cancer types that were examined in the dataset. These graphics show that each region has very distinct incidence values that differ. For example, the New England area breast cancer incidence value is ~131 which is very different from the nearby central northeast area of ~118. 
+
+The main take away from these graphics is to notice the x-axis since it changes for each of the three cancer types. Breast and prostate cancer have much higher incidence value ranges than melanoma, which can be attributed to the increase in prostate and breast exams. 
+
+## Cancer Incidence Rates by Region and Average Income
+
+```{r}
+ggplot(gather_cancer, aes(value, income_mean)) +
+  geom_point(aes(color = region)) +
+  facet_wrap(~key, scales = "free_x")
+```
+
+The graphics displayed here further highlight the relationship between each region, the average household income, and the individual cancer types that were examined in the dataset. With the addition of a third variable, you are able to recognize the positive relationship between the average income and the breast cancer incidence rate. Regions like New England with an average income above $55,000 have much higher breast cancer incidences than the central southwest which averages less than $45,000, which has the lowest cancer incidence rate. Similarly, you can see this positive trend in the melanoma graph; A larger average income seems to be associated with higher melanoma incidence as well. Conversely, the relationship reverses when we examine prostate cancer incidence rates. The central southeast has the lowest average income, however also has a high incidence rate, whereas New England, with the highest income level, has one of the lowest prostate incidence rates.
+
+```{r}
+ggplot(gather_cancer, aes(value, poverty_mean)) +
+  geom_point(aes(color = region)) +
+  facet_wrap(~key, scales = "free_x")
+```
+
+The average percentage of households below the poverty line was also examined in order to further support this relationship. As shown in the figures above, a low level of poverty is associated with higher incidence rates for both melanoma and breast cancer. However, once again we can see the oposite relationship for prostate cancer. Regions with lower poverty levels are now relatively associated with low levels of prostate cancer rates.
+
+## Conclusion
+
+I have always been interested in healthcare, but rarely get to work with raw data that provides and portrays such interesting relationships that you would not normally consider. The dataset provided here allowed us to identify several relationships between different cancer types, income levels, and regions. At first people may immediately assume that a higher income would be associated with lower levels of cancer simply because we associate more money with better health care options or better living conditions. However, as we have seen here, that is not always the case. Both melanoma and breast cancer incidence rates were positively associated with higher average income regions. Whereas, higher prostate cancer incidence rates were relatively associated with lower income levels. It would be even more interesting to be able to work with data collected for regions around the world to see if these trends continue.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
